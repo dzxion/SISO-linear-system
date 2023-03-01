@@ -1,4 +1,4 @@
-function [sys,x0,str,ts,simStateCompliance] = full_state_feedback_controller(t,x,u,flag)
+function [sys,x0,str,ts,simStateCompliance] = backstepping(t,x,u,flag)
 %SFUNTMPL General MATLAB S-Function Template
 %   With MATLAB S-functions, you can define you own ordinary differential
 %   equations (ODEs), discrete system equations, and/or just about
@@ -231,15 +231,45 @@ sys = [];
 %
 function sys=mdlOutputs(t,x,u)
 
-k0 = 15000;
-k1 = 6250;
-k2 = 875;
-k3 = 50;
+hierarchical = 2;
+high_gain = 1;
+k0 = 10;
+k1 = 10;
+k2 = 10;
+% k3 = 10;
+k3 = k1^2 / (k1*k2-k0) + 10;
+% k2 = k3^2 * k0 /(k1*(k3-k1)) + 10;
 x1 = u(1);
 x2 = u(2);
 x3 = u(3);
 x4 = u(4);
-uc = -k0*x1-k1*x2-k2*x3-k3*x4;
+
+if hierarchical == 1
+    x3d = -k0*x1-k1*x2;
+    if high_gain == 1
+        x3d_dot = 0;
+        x3d_dot_dot = 0;
+    else
+        x3d_dot = -k0*x2-k1*x3;
+        x3d_dot_dot = -k0*x3-k1*x4;
+    end
+
+    x3_tilde = x3 - x3d;
+    x4_tilde = x4 - x3d_dot;
+
+    uc = x3d_dot_dot - k2*x3_tilde - k3*x4_tilde;
+elseif hierarchical == 2
+    x4d = -k0*x1-k1*x2-k2*x3;
+    if high_gain == 1
+        x4d_dot = 0;
+    else
+        x4d_dot = -k0*x2-k1*x3-k2*x4;
+    end
+    x4_tilde = x4 - x4d;
+    
+    uc = x4d_dot - k3*x4_tilde;
+end
+
 sys = [uc];
 
 % end mdlOutputs
