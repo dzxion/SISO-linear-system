@@ -1,21 +1,29 @@
 close all
 
 % target filter
-pa.wc_target = 1;
+fc_tar = 8;
+pa.wc_tar = 2*pi*fc_tar;
 
 % torque filter
-pa.wc_torque = 1;
+fc_tor = 80;
+pa.wc_tor = 2*pi*fc_tor;
+
+% velocity filter
+fc_vel = 80;
+pa.wc_vel = 2*pi*fc_vel;
 
 % position controller
-pa.Kp_p = 1;
+pa.P_p = 40;
 
 % velocity controller
-pa.Ki_v = 0.1;
-pa.Kp_v = 1;
+pa.P_v = 30;
+pa.I_v = 3.0;
+pa.D_v = 0.0006;
+pa.Dlp_v = 50;
 
 % position observer
-pa.Kp_observer = 1;
-pa.Ki_observer = 0.1;
+pa.P_obs = 5.0;
+pa.I_obs = 0.1;
 
 % % target
 % pa.p_vef = 1.0;
