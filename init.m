@@ -17,8 +17,8 @@ pa.P_p = 40;
 
 % velocity controller
 pa.P_v = 30;
-pa.I_v = 3.0;
-pa.D_v = 0.0006;
+pa.I_v = 10.0;
+pa.D_v = 0.0;
 pa.Dlp_v = 50;
 
 % position observer
