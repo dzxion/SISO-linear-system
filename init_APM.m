@@ -1,5 +1,11 @@
 close all
 
+% 先添加路径
+addpath("D:\2_code\0_control_matlab\0_control-toolbox-main\2_ardupilog-master");
+addpath("D:\2_code\0_control_matlab\0_control-toolbox-main\matlab_hq\mathlib_m");
+% log_gimbal_17 = Ardupilog();
+log = Ardupilog();
+
 % Plant
 pa.ATC_RAT_PIT_B = 175;
 
